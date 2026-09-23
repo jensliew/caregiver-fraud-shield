@@ -1,0 +1,11 @@
+{
+  "name": "silver-guard-auth-lambda",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Silver Guard account auth Lambda: register/login (scrypt-hashed PIN) and server-side face match, backed by DynamoDB.",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.658.0",
+    "@aws-sdk/lib-dynamodb": "^3.658.0"
+  }
+}

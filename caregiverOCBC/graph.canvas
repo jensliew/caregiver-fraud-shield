@@ -1,0 +1,952 @@
+{
+  "nodes": [
+    {
+      "id": "g0",
+      "type": "group",
+      "label": "Project Spec (Advanced) \u2014 Simplified Silver Assist & Multi-Agent Scam Guard Engine",
+      "x": 0,
+      "y": 0,
+      "width": 880,
+      "height": 420,
+      "color": "1"
+    },
+    {
+      "id": "n_spec_1_summary",
+      "type": "file",
+      "file": "1. Summary.md",
+      "x": 20,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec_10_related_documents",
+      "type": "file",
+      "file": "10. Related Documents.md",
+      "x": 220,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec_2_problem_one_sentence",
+      "type": "file",
+      "file": "2. Problem (one sentence).md",
+      "x": 420,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec_3_solution_one_sentence",
+      "type": "file",
+      "file": "3. Solution (one sentence).md",
+      "x": 620,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec_4_core_capabilities",
+      "type": "file",
+      "file": "4. Core Capabilities.md",
+      "x": 20,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec_5_target_users",
+      "type": "file",
+      "file": "5. Target Users.md",
+      "x": 220,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec_6_business_outcomes_ranked_per_company_q7",
+      "type": "file",
+      "file": "6. Business Outcomes (ranked, per company Q7).md",
+      "x": 420,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec_7_hackathon_scope",
+      "type": "file",
+      "file": "7. Hackathon Scope.md",
+      "x": 620,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec_8_honest_limitations_state_these_to_judges_don_t_hide_them",
+      "type": "file",
+      "file": "8. Honest Limitations (state these to judges, don't hide them).md",
+      "x": 20,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec_9_judge_readiness_anticipated_questions_honest_answers",
+      "type": "file",
+      "file": "9. Judge Readiness \u2014 Anticipated Questions & Honest Answers.md",
+      "x": 220,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "type": "file",
+      "file": "Project Spec (Advanced) \u2014 Simplified Silver Assist & Multi-Agent Scam Guard Engine.md",
+      "x": 420,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_spec",
+      "type": "file",
+      "file": "spec.md",
+      "x": 620,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g1",
+      "type": "group",
+      "label": "Tasks (Advanced) \u2014 Simplified Silver Assist & Multi-Agent Scam Guard Engine",
+      "x": 960,
+      "y": 0,
+      "width": 880,
+      "height": 420,
+      "color": "2"
+    },
+    {
+      "id": "n_tasks_phase_0_planning_key_decisions",
+      "type": "file",
+      "file": "Phase 0 \u2014 Planning & Key Decisions.md",
+      "x": 980,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_phase_1_fraud_detection_engine",
+      "type": "file",
+      "file": "Phase 1 \u2014 Fraud Detection Engine.md",
+      "x": 1180,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_phase_2_silver_mode_ui",
+      "type": "file",
+      "file": "Phase 2 \u2014 Silver Mode UI.md",
+      "x": 1380,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_phase_3_biometric_challenge_one_open_item",
+      "type": "file",
+      "file": "Phase 3 \u2014 Biometric Challenge (one open item).md",
+      "x": 1580,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_phase_4_caregiver_human_in_the_loop_flow",
+      "type": "file",
+      "file": "Phase 4 \u2014 Caregiver & Human-in-the-Loop Flow.md",
+      "x": 980,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_phase_5_design_mockup",
+      "type": "file",
+      "file": "Phase 5 \u2014 Design Mockup.md",
+      "x": 1180,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_phase_6_pitch_deck_content",
+      "type": "file",
+      "file": "Phase 6 \u2014 Pitch Deck Content.md",
+      "x": 1380,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_phase_7_compliance_production_readiness_notes_for_judges_appendix_not_build_items",
+      "type": "file",
+      "file": "Phase 7 \u2014 Compliance & Production-Readiness Notes (for judges  appendix, not build items).md",
+      "x": 1580,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_phase_8_final_qa_before_submission",
+      "type": "file",
+      "file": "Phase 8 \u2014 Final QA Before Submission.md",
+      "x": 980,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "type": "file",
+      "file": "Tasks (Advanced) \u2014 Simplified Silver Assist & Multi-Agent Scam Guard Engine.md",
+      "x": 1180,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks",
+      "type": "file",
+      "file": "tasks.md",
+      "x": 1380,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g2",
+      "type": "group",
+      "label": "2. System / Technical Design",
+      "x": 1920,
+      "y": 0,
+      "width": 880,
+      "height": 420,
+      "color": "3"
+    },
+    {
+      "id": "n_design_2_system_technical_design",
+      "type": "file",
+      "file": "2. System  Technical Design.md",
+      "x": 1940,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_2_1_component_overview",
+      "type": "file",
+      "file": "2.1 Component Overview.md",
+      "x": 2140,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_2_2_fraud_detection_logic_design",
+      "type": "file",
+      "file": "2.2 Fraud Detection Logic Design.md",
+      "x": 2340,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_2_3_response_flow_design",
+      "type": "file",
+      "file": "2.3 Response Flow Design.md",
+      "x": 2540,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_2_4_realistic_3_layer_detection_approach_why_whatsapp_scanning_is_out",
+      "type": "file",
+      "file": "2.4 Realistic 3-Layer Detection Approach (why WhatsApp scanning is out).md",
+      "x": 1940,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_2_5_biometric_verification_design",
+      "type": "file",
+      "file": "2.5 Biometric Verification Design.md",
+      "x": 2140,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_2_6_tech_stack",
+      "type": "file",
+      "file": "2.6 Tech Stack.md",
+      "x": 2340,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_2_7_integration_points_future_production",
+      "type": "file",
+      "file": "2.7 Integration Points (future  production).md",
+      "x": 2540,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_2_8_design_constraints",
+      "type": "file",
+      "file": "2.8 Design Constraints.md",
+      "x": 1940,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_2_9_testing_notes",
+      "type": "file",
+      "file": "2.9 Testing Notes.md",
+      "x": 2140,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g3",
+      "type": "group",
+      "label": "1. Functional Requirements",
+      "x": 0,
+      "y": 500,
+      "width": 660,
+      "height": 420,
+      "color": "4"
+    },
+    {
+      "id": "n_requirements_1_functional_requirements",
+      "type": "file",
+      "file": "1. Functional Requirements.md",
+      "x": 20,
+      "y": 580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_1_1_silver_mode_portal_ui",
+      "type": "file",
+      "file": "1.1 Silver Mode Portal (UI).md",
+      "x": 220,
+      "y": 580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_1_2_fraud_malware_guard_agent",
+      "type": "file",
+      "file": "1.2 Fraud & Malware Guard Agent.md",
+      "x": 420,
+      "y": 580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_1_3_smart_friction_biometric_challenge",
+      "type": "file",
+      "file": "1.3 Smart Friction & Biometric Challenge.md",
+      "x": 20,
+      "y": 660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_1_4_caregiver_co_pilot_sync",
+      "type": "file",
+      "file": "1.4 Caregiver Co-Pilot Sync.md",
+      "x": 220,
+      "y": 660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_1_5_get_help_link_checking",
+      "type": "file",
+      "file": "1.5 Get Help  Link-Checking.md",
+      "x": 420,
+      "y": 660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_1_6_logging_human_review_feedback_loop",
+      "type": "file",
+      "file": "1.6 Logging, Human Review & Feedback Loop.md",
+      "x": 20,
+      "y": 740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_1_7_pitch_deck_production_requirements_new",
+      "type": "file",
+      "file": "1.7 PitchDeck Production Requirements (new).md",
+      "x": 220,
+      "y": 740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g4",
+      "type": "group",
+      "label": "1. UX Design",
+      "x": 960,
+      "y": 500,
+      "width": 660,
+      "height": 420,
+      "color": "5"
+    },
+    {
+      "id": "n_design_1_ux_design",
+      "type": "file",
+      "file": "1. UX Design.md",
+      "x": 980,
+      "y": 580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_1_1_screens",
+      "type": "file",
+      "file": "1.1 Screens.md",
+      "x": 1180,
+      "y": 580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_1_2_visual_style",
+      "type": "file",
+      "file": "1.2 Visual Style.md",
+      "x": 1380,
+      "y": 580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_1_3_design_mockup_reference",
+      "type": "file",
+      "file": "1.3 Design Mockup Reference.md",
+      "x": 980,
+      "y": 660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_1_4_see_it_in_action_slide_production_new",
+      "type": "file",
+      "file": "1.4 See it in Action Slide Production (new).md",
+      "x": 1180,
+      "y": 660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design_design_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "type": "file",
+      "file": "Design (Advanced) \u2014 Simplified Silver Assist & Multi-Agent Scam Guard Engine.md",
+      "x": 1380,
+      "y": 660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_design",
+      "type": "file",
+      "file": "design.md",
+      "x": 980,
+      "y": 740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g5",
+      "type": "group",
+      "label": "Requirements (Advanced) \u2014 Simplified Silver Assist & Multi-Agent Scam Guard Engine",
+      "x": 1920,
+      "y": 500,
+      "width": 660,
+      "height": 400,
+      "color": "6"
+    },
+    {
+      "id": "n_requirements_2_non_functional_requirements",
+      "type": "file",
+      "file": "2. Non-Functional Requirements.md",
+      "x": 1940,
+      "y": 580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_4_response_requirements_what_must_happen_on_detection",
+      "type": "file",
+      "file": "4. Response Requirements (what must happen on detection).md",
+      "x": 2140,
+      "y": 580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_5_data_requirements",
+      "type": "file",
+      "file": "5. Data Requirements.md",
+      "x": 2340,
+      "y": 580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_6_known_constraints_non_requirements",
+      "type": "file",
+      "file": "6. Known Constraints  Non-Requirements.md",
+      "x": 1940,
+      "y": 660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "type": "file",
+      "file": "Requirements (Advanced) \u2014 Simplified Silver Assist & Multi-Agent Scam Guard Engine.md",
+      "x": 2140,
+      "y": 660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements",
+      "type": "file",
+      "file": "requirements.md",
+      "x": 2340,
+      "y": 660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g6",
+      "type": "group",
+      "label": "3. Fraud Detection Signal Requirements",
+      "x": 0,
+      "y": 1000,
+      "width": 660,
+      "height": 400,
+      "color": "1"
+    },
+    {
+      "id": "n_requirements_3_fraud_detection_signal_requirements",
+      "type": "file",
+      "file": "3. Fraud Detection Signal Requirements.md",
+      "x": 20,
+      "y": 1080,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_3_1_transaction_payee_behavior",
+      "type": "file",
+      "file": "3.1 Transaction & payee behavior.md",
+      "x": 220,
+      "y": 1080,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_3_2_device_session_signals",
+      "type": "file",
+      "file": "3.2 Device & session signals.md",
+      "x": 420,
+      "y": 1080,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_3_3_account_profile_changes",
+      "type": "file",
+      "file": "3.3 Accountprofile changes.md",
+      "x": 20,
+      "y": 1160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_3_4_behavioral_biometric_signals",
+      "type": "file",
+      "file": "3.4 Behavioralbiometric signals.md",
+      "x": 220,
+      "y": 1160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_requirements_3_5_communication_channel_context_supporting_signal_only_never_sole_trigger",
+      "type": "file",
+      "file": "3.5 Communication-channel context (supporting signal only, never sole trigger).md",
+      "x": 420,
+      "y": 1160,
+      "width": 180,
+      "height": 60
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_spec_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_spec_10_related_documents_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec_10_related_documents",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_spec_1_summary_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec_1_summary",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_spec_2_problem_one_sentence_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec_2_problem_one_sentence",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_spec_3_solution_one_sentence_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec_3_solution_one_sentence",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_spec_4_core_capabilities_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec_4_core_capabilities",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_spec_5_target_users_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec_5_target_users",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_spec_6_business_outcomes_ranked_per_company_q7_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec_6_business_outcomes_ranked_per_company_q7",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_spec_7_hackathon_scope_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec_7_hackathon_scope",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_spec_8_honest_limitations_state_these_to_judges_don_t_hide_them_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec_8_honest_limitations_state_these_to_judges_don_t_hide_them",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_spec_9_judge_readiness_anticipated_questions_honest_answers_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_spec_9_judge_readiness_anticipated_questions_honest_answers",
+      "toNode": "n_spec_project_spec_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_phase_0_planning_key_decisions_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_tasks_phase_0_planning_key_decisions",
+      "toNode": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_phase_1_fraud_detection_engine_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_tasks_phase_1_fraud_detection_engine",
+      "toNode": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_phase_2_silver_mode_ui_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_tasks_phase_2_silver_mode_ui",
+      "toNode": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_phase_3_biometric_challenge_one_open_item_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_tasks_phase_3_biometric_challenge_one_open_item",
+      "toNode": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_phase_4_caregiver_human_in_the_loop_flow_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_tasks_phase_4_caregiver_human_in_the_loop_flow",
+      "toNode": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_phase_5_design_mockup_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_tasks_phase_5_design_mockup",
+      "toNode": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_phase_6_pitch_deck_content_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_tasks_phase_6_pitch_deck_content",
+      "toNode": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_phase_7_compliance_production_readiness_notes_for_judges_appendix_not_build_items_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_tasks_phase_7_compliance_production_readiness_notes_for_judges_appendix_not_build_items",
+      "toNode": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_phase_8_final_qa_before_submission_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_tasks_phase_8_final_qa_before_submission",
+      "toNode": "n_tasks_tasks_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_2_1_component_overview_design_2_system_technical_design",
+      "fromNode": "n_design_2_1_component_overview",
+      "toNode": "n_design_2_system_technical_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_2_2_fraud_detection_logic_design_design_2_system_technical_design",
+      "fromNode": "n_design_2_2_fraud_detection_logic_design",
+      "toNode": "n_design_2_system_technical_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_2_3_response_flow_design_design_2_system_technical_design",
+      "fromNode": "n_design_2_3_response_flow_design",
+      "toNode": "n_design_2_system_technical_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_2_4_realistic_3_layer_detection_approach_why_whatsapp_scanning_is_out_design_2_system_technical_design",
+      "fromNode": "n_design_2_4_realistic_3_layer_detection_approach_why_whatsapp_scanning_is_out",
+      "toNode": "n_design_2_system_technical_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_2_5_biometric_verification_design_design_2_system_technical_design",
+      "fromNode": "n_design_2_5_biometric_verification_design",
+      "toNode": "n_design_2_system_technical_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_2_6_tech_stack_design_2_system_technical_design",
+      "fromNode": "n_design_2_6_tech_stack",
+      "toNode": "n_design_2_system_technical_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_2_7_integration_points_future_production_design_2_system_technical_design",
+      "fromNode": "n_design_2_7_integration_points_future_production",
+      "toNode": "n_design_2_system_technical_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_2_8_design_constraints_design_2_system_technical_design",
+      "fromNode": "n_design_2_8_design_constraints",
+      "toNode": "n_design_2_system_technical_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_2_9_testing_notes_design_2_system_technical_design",
+      "fromNode": "n_design_2_9_testing_notes",
+      "toNode": "n_design_2_system_technical_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_2_system_technical_design_design_design_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_design_2_system_technical_design",
+      "toNode": "n_design_design_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_1_1_silver_mode_portal_ui_requirements_1_functional_requirements",
+      "fromNode": "n_requirements_1_1_silver_mode_portal_ui",
+      "toNode": "n_requirements_1_functional_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_1_2_fraud_malware_guard_agent_requirements_1_functional_requirements",
+      "fromNode": "n_requirements_1_2_fraud_malware_guard_agent",
+      "toNode": "n_requirements_1_functional_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_1_3_smart_friction_biometric_challenge_requirements_1_functional_requirements",
+      "fromNode": "n_requirements_1_3_smart_friction_biometric_challenge",
+      "toNode": "n_requirements_1_functional_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_1_4_caregiver_co_pilot_sync_requirements_1_functional_requirements",
+      "fromNode": "n_requirements_1_4_caregiver_co_pilot_sync",
+      "toNode": "n_requirements_1_functional_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_1_5_get_help_link_checking_requirements_1_functional_requirements",
+      "fromNode": "n_requirements_1_5_get_help_link_checking",
+      "toNode": "n_requirements_1_functional_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_1_6_logging_human_review_feedback_loop_requirements_1_functional_requirements",
+      "fromNode": "n_requirements_1_6_logging_human_review_feedback_loop",
+      "toNode": "n_requirements_1_functional_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_1_7_pitch_deck_production_requirements_new_requirements_1_functional_requirements",
+      "fromNode": "n_requirements_1_7_pitch_deck_production_requirements_new",
+      "toNode": "n_requirements_1_functional_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_1_functional_requirements_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_requirements_1_functional_requirements",
+      "toNode": "n_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_design_design_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_design",
+      "toNode": "n_design_design_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_1_1_screens_design_1_ux_design",
+      "fromNode": "n_design_1_1_screens",
+      "toNode": "n_design_1_ux_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_1_2_visual_style_design_1_ux_design",
+      "fromNode": "n_design_1_2_visual_style",
+      "toNode": "n_design_1_ux_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_1_3_design_mockup_reference_design_1_ux_design",
+      "fromNode": "n_design_1_3_design_mockup_reference",
+      "toNode": "n_design_1_ux_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_1_4_see_it_in_action_slide_production_new_design_1_ux_design",
+      "fromNode": "n_design_1_4_see_it_in_action_slide_production_new",
+      "toNode": "n_design_1_ux_design",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_design_1_ux_design_design_design_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_design_1_ux_design",
+      "toNode": "n_design_design_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_requirements",
+      "toNode": "n_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_2_non_functional_requirements_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_requirements_2_non_functional_requirements",
+      "toNode": "n_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_4_response_requirements_what_must_happen_on_detection_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_requirements_4_response_requirements_what_must_happen_on_detection",
+      "toNode": "n_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_5_data_requirements_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_requirements_5_data_requirements",
+      "toNode": "n_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_6_known_constraints_non_requirements_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "fromNode": "n_requirements_6_known_constraints_non_requirements",
+      "toNode": "n_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine_requirements_3_fraud_detection_signal_requirements",
+      "fromNode": "n_requirements_requirements_advanced_simplified_silver_assist_multi_agent_scam_guard_engine",
+      "toNode": "n_requirements_3_fraud_detection_signal_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_3_1_transaction_payee_behavior_requirements_3_fraud_detection_signal_requirements",
+      "fromNode": "n_requirements_3_1_transaction_payee_behavior",
+      "toNode": "n_requirements_3_fraud_detection_signal_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_3_2_device_session_signals_requirements_3_fraud_detection_signal_requirements",
+      "fromNode": "n_requirements_3_2_device_session_signals",
+      "toNode": "n_requirements_3_fraud_detection_signal_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_3_3_account_profile_changes_requirements_3_fraud_detection_signal_requirements",
+      "fromNode": "n_requirements_3_3_account_profile_changes",
+      "toNode": "n_requirements_3_fraud_detection_signal_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_3_4_behavioral_biometric_signals_requirements_3_fraud_detection_signal_requirements",
+      "fromNode": "n_requirements_3_4_behavioral_biometric_signals",
+      "toNode": "n_requirements_3_fraud_detection_signal_requirements",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_requirements_3_5_communication_channel_context_supporting_signal_only_never_sole_trigger_requirements_3_fraud_detection_signal_requirements",
+      "fromNode": "n_requirements_3_5_communication_channel_context_supporting_signal_only_never_sole_trigger",
+      "toNode": "n_requirements_3_fraud_detection_signal_requirements",
+      "label": "contains [EXTRACTED]"
+    }
+  ]
+}

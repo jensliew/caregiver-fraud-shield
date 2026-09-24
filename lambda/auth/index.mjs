@@ -166,8 +166,10 @@ async function handleFaceLogin(p) {
   }
 
   const distance = euclidean(descriptor, item.faceDescriptor);
-  // Mirror the client's tightened match threshold (see useFaceDetection).
-  const match = Number.isFinite(distance) && distance < 0.55;
+  // Mirror the client's match threshold (see useFaceDetection.ts) — the
+  // face-api.js documented default of 0.6, which keeps genuine same-person
+  // logins working across lighting/angle shifts on mobile front cameras.
+  const match = Number.isFinite(distance) && distance < 0.6;
   if (!match) return json(401, { ok: false, error: 'Face does not match.', distance });
   return json(200, { ok: true, account: publicAccount(item), distance });
 }

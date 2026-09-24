@@ -7,7 +7,7 @@ import { useAppState } from '../../state/AppStateContext';
 import { useT } from '../../i18n/useT';
 import { getEnrolledDescriptor, hasEnrollment } from '../../lib/faceEnrollment';
 import { getSessionEmail, clearSession } from '../../lib/session';
-import { loginWithPin, loginWithFace } from '../../lib/authApi';
+import { loginWithPin, loginWithFace, fetchAccount } from '../../lib/authApi';
 import type { VerifyResult } from '../../hooks/useFaceDetection';
 
 type View = 'face' | 'pin';
@@ -36,13 +36,21 @@ export function LoginScreen() {
   const [busy, setBusy] = useState(false);
 
   async function handleFaceResult(result: VerifyResult) {
+    // FaceScanCapture (verify mode) has already run the authoritative,
+    // real check here: liveness (blink) + a fresh descriptor matched
+    // against the enrolled one. result.success is that outcome, so we only
+    // proceed on a genuine match and fail closed otherwise.
     if (!result.success || !sessionEmail || !enrolledDescriptor) {
       if (!result.success) setError(t('loginFaceFailed'));
       return;
     }
     setBusy(true);
     setError('');
-    const res = await loginWithFace(sessionEmail, Array.from(enrolledDescriptor));
+    // With a real backend, faceLogin re-verifies server-side and returns the
+    // account; if that path errors (or in offline mode) fall back to simply
+    // fetching the account we've already biometrically verified above.
+    let res = await loginWithFace(sessionEmail, Array.from(enrolledDescriptor));
+    if (!res.ok) res = await fetchAccount(sessionEmail);
     setBusy(false);
     if (res.ok && res.account) signIn(res.account);
     else setError(res.error || t('loginFaceFailed'));

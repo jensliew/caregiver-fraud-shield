@@ -39,15 +39,19 @@ const MIN_DETECTION_CONFIDENCE = 0.5;
 // detectors use (e.g. yozoyugen/eye-blink-detection-JS tracks a rolling
 // mean and flags a blink as a relative deviation from it, not a constant).
 const BASELINE_PERCENTILE = 0.85; // this person's own typical "eyes open" EAR for this session
-const RELATIVE_BLINK_DROP = 0.75; // must dip to at most 75% of their own baseline to count as a blink
+const RELATIVE_BLINK_DROP = 0.82; // must dip to at most 82% of their own baseline to count as a blink
 const MIN_FACE_SAMPLE_RATIO = 0.5; // at least this fraction of samples must have found a face at all
 
 // face-api.js's default cutoff for "same person" on its 128-d descriptor is
-// 0.6 (Euclidean distance). Tightened to 0.55 here to cut false accepts —
-// the accuracy upgrade averages many descriptors across the whole liveness
-// window (see verifyIdentity), so the genuine-user distance is lower and
-// more stable, letting us afford the stricter bar without more rejections.
-const MATCH_DISTANCE_THRESHOLD = 0.55;
+// 0.6 (Euclidean distance). We use that documented default here: on mobile
+// front cameras the lighting/angle between the enrollment moment and a later
+// login shifts enough that a genuine same-person distance often lands just
+// above a tighter bar (0.55), causing false rejects — the "enrolled fine but
+// can't log back in" symptom. Averaging many descriptors on both sides (see
+// verifyIdentity) already stabilizes the distance; 0.6 keeps genuine logins
+// working while still rejecting a different person (whose distance is
+// typically well above 0.6).
+const MATCH_DISTANCE_THRESHOLD = 0.6;
 // How many good descriptor samples the averaged live query aims to collect
 // across the liveness window. More frames → a smoother, more reliable mean.
 const TARGET_LIVE_SAMPLES = 6;

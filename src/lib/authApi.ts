@@ -33,7 +33,7 @@ const ENDPOINT = import.meta.env.VITE_AUTH_ENDPOINT;
 // ── Demo defaults (mirror lambda/auth/index.mjs) ──────────────────────────
 const INITIAL_BALANCE = 18240.5;
 const INITIAL_TRANSFER_LIMIT = 5000;
-const FACE_MATCH_THRESHOLD = 0.55;
+const FACE_MATCH_THRESHOLD = 0.6; // face-api.js documented default; see useFaceDetection.ts
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PIN_RE = /^\d{6}$/;
 const normEmail = (e: unknown) => String(e || '').trim().toLowerCase();

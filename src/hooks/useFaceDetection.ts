@@ -21,10 +21,14 @@ import { useCallback, useRef } from 'react';
 // @master since the repo has no version tags for this folder.
 const MODEL_URL = 'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@d50c2b147132fa1b4ed1dbf625262ceea99640bc/weights';
 
-// Kept short enough that the full verify (liveness window + averaged
-// descriptor capture below) completes within ~5s end to end.
-const LIVENESS_DURATION_MS = 3500;
-const SAMPLE_INTERVAL_MS = 130;
+// The liveness window needs to span enough frames to reliably catch a brief
+// (~100-150ms) blink. On mobile, each detectSingleFace+landmarks call itself
+// costs a few hundred ms, so a short window with a long interval yields too
+// few samples and misses blinks entirely (the "didn't detect a blink" bug).
+// A longer window with no artificial delay between detections maximizes the
+// number of frames — the detection call's own latency paces the loop.
+const LIVENESS_DURATION_MS = 5000;
+const SAMPLE_INTERVAL_MS = 0;
 // How confident the detector must be that a box really is a face before we
 // trust its landmarks/descriptor (SSD MobileNet score, 0..1). Filters out
 // weak/spurious detections that would otherwise pollute the average.
@@ -39,8 +43,12 @@ const MIN_DETECTION_CONFIDENCE = 0.5;
 // detectors use (e.g. yozoyugen/eye-blink-detection-JS tracks a rolling
 // mean and flags a blink as a relative deviation from it, not a constant).
 const BASELINE_PERCENTILE = 0.85; // this person's own typical "eyes open" EAR for this session
-const RELATIVE_BLINK_DROP = 0.82; // must dip to at most 82% of their own baseline to count as a blink
-const MIN_FACE_SAMPLE_RATIO = 0.5; // at least this fraction of samples must have found a face at all
+// Any genuine eyelid movement dips EAR below ~88% of the open baseline.
+// With few frames on mobile we may only catch the partial edge of a blink,
+// so we count a modest dip as liveness rather than requiring a full closure —
+// erring toward accepting a live person over false "no blink" rejections.
+const RELATIVE_BLINK_DROP = 0.88; // dip to at most 88% of their own baseline counts as a blink
+const MIN_FACE_SAMPLE_RATIO = 0.4; // at least this fraction of samples must have found a face at all
 
 // face-api.js's default cutoff for "same person" on its 128-d descriptor is
 // 0.6 (Euclidean distance). We use that documented default here: on mobile

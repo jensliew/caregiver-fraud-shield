@@ -149,7 +149,8 @@ export function FaceScanCapture(props: FaceScanProps) {
       } else if (result.reason === 'no-blink') {
         setStatus("Didn't detect a blink. Look straight at the camera and try again.");
       } else if (result.reason === 'no-match') {
-        setStatus("That doesn't match the enrolled face.");
+        const d = typeof result.distance === 'number' ? ` (distance ${result.distance.toFixed(3)})` : '';
+        setStatus(`That doesn't match the enrolled face${d}.`);
       } else {
         setStatus('Verification failed. Try again.');
       }

@@ -45,16 +45,30 @@ export function LoginScreen() {
     // account, which can differ (e.g. enrolled on another device, or after a
     // DB reset) and produced a contradictory "Face verified" + "Face didn't
     // match" at once. Once the live match passes, we just fetch the account.
-    if (!result.success || !sessionEmail) {
-      if (!result.success) setError(t('loginFaceFailed'));
+    if (!result.success) {
+      setError(t('loginFaceFailed'));
+      return;
+    }
+    // Face is verified. We now need the account to sign in. Without a
+    // remembered email we can't fetch it, so guide the user to PIN rather
+    // than silently doing nothing (the "verified but nothing happens" bug).
+    if (!sessionEmail) {
+      setError('Face verified, but we could not find your account on this device. Please log in with your email and PIN.');
+      setView('pin');
       return;
     }
     setBusy(true);
     setError('');
     const res = await fetchAccount(sessionEmail);
     setBusy(false);
-    if (res.ok && res.account) signIn(res.account);
-    else setError(res.error || t('loginFaceFailed'));
+    if (res.ok && res.account) {
+      signIn(res.account);
+    } else {
+      // Verified locally but the account fetch failed (network, or the
+      // account no longer exists in the DB, e.g. after a reset). Surface it
+      // clearly and offer PIN instead of a dead end.
+      setError(res.error || 'Face verified, but we could not load your account. Please try again or use your PIN.');
+    }
   }
 
   async function handlePinSubmit(e: React.FormEvent) {
@@ -88,7 +102,7 @@ export function LoginScreen() {
           {view === 'face' ? (
             <>
               <div className="flex flex-col items-center gap-4">
-                {enrolledDescriptor ? (
+                {canFaceLogin && enrolledDescriptor ? (
                   <FaceScanCapture
                     mode="verify"
                     scanLabel={t('loginBiometricButton')}

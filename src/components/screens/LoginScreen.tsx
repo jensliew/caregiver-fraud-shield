@@ -5,7 +5,7 @@ import { BrandHero } from '../layout/BrandHero';
 import { FaceScanCapture } from '../FaceScanCapture';
 import { useAppState } from '../../state/AppStateContext';
 import { useT } from '../../i18n/useT';
-import { getEnrolledDescriptor, hasEnrollment } from '../../lib/faceEnrollment';
+import { getEnrolledDescriptor, hasEnrollment, getEnrolledEmail } from '../../lib/faceEnrollment';
 import { getSessionEmail, clearSession } from '../../lib/session';
 import { loginWithPin, fetchAccount } from '../../lib/authApi';
 import type { VerifyResult } from '../../hooks/useFaceDetection';
@@ -27,7 +27,10 @@ export function LoginScreen() {
 
   const sessionEmail = getSessionEmail();
   const enrolledDescriptor = hasEnrollment() ? getEnrolledDescriptor() : null;
-  const canFaceLogin = Boolean(sessionEmail && enrolledDescriptor);
+  // The account for face login: the current session if present, else the
+  // account this device's face was enrolled for (survives sign-out).
+  const faceLoginEmail = sessionEmail ?? getEnrolledEmail();
+  const canFaceLogin = Boolean(faceLoginEmail && enrolledDescriptor);
 
   const [view, setView] = useState<View>('face'); // biometric is the default
   const [email, setEmail] = useState(sessionEmail ?? '');
@@ -50,16 +53,17 @@ export function LoginScreen() {
       return;
     }
     // Face is verified. We now need the account to sign in. Without a
-    // remembered email we can't fetch it, so guide the user to PIN rather
-    // than silently doing nothing (the "verified but nothing happens" bug).
-    if (!sessionEmail) {
+    // remembered email (neither an active session nor the enrolled account)
+    // we can't fetch it, so guide the user to PIN rather than silently doing
+    // nothing (the "verified but nothing happens" bug).
+    if (!faceLoginEmail) {
       setError('Face verified, but we could not find your account on this device. Please log in with your email and PIN.');
       setView('pin');
       return;
     }
     setBusy(true);
     setError('');
-    const res = await fetchAccount(sessionEmail);
+    const res = await fetchAccount(faceLoginEmail);
     setBusy(false);
     if (res.ok && res.account) {
       signIn(res.account);
@@ -102,7 +106,11 @@ export function LoginScreen() {
           {view === 'face' ? (
             <>
               <div className="flex flex-col items-center gap-4">
-                {canFaceLogin && enrolledDescriptor ? (
+                {enrolledDescriptor ? (
+                  // A face is enrolled on this device → run the real scan.
+                  // If the account can't be resolved afterwards (no remembered
+                  // email, or account not in the DB), handleFaceResult shows a
+                  // clear message and switches to PIN — it never dead-ends.
                   <FaceScanCapture
                     mode="verify"
                     scanLabel={t('loginBiometricButton')}
@@ -112,9 +120,9 @@ export function LoginScreen() {
                     onScanStart={() => setError('')}
                   />
                 ) : (
-                  // No enrolled account on this device — show the scan glyph
-                  // and route the user to register / PIN rather than a dead
-                  // camera button.
+                  // No enrolled face on this device — face login isn't
+                  // possible here, so guide the user to register or use PIN
+                  // rather than showing a dead camera button.
                   <FaceIntro onRegister={() => setScreen('register')} label={t('loginBiometricButton')} />
                 )}
               </div>

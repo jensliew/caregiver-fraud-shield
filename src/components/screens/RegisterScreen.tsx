@@ -52,7 +52,7 @@ export function RegisterScreen() {
       faceDescriptor: Array.from(descriptor),
     });
     if (result.ok && result.account) {
-      saveEnrolledDescriptor(descriptor);
+      saveEnrolledDescriptor(descriptor, result.account.email);
       signIn(result.account);
       return;
     }

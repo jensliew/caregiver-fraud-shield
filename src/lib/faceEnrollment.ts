@@ -15,9 +15,19 @@
  * execution plan's tech-stack table for that production path.
  */
 const STORAGE_KEY = 'silver-guard:face-descriptor';
+// The email of the account this face was enrolled for. Kept separate from
+// the session pointer (lib/session.ts) so it SURVIVES sign-out — face login
+// still needs to know which account to fetch after the session is cleared.
+const ENROLLED_EMAIL_KEY = 'silver-guard:face-account-email';
 
-export function saveEnrolledDescriptor(descriptor: Float32Array): void {
+export function saveEnrolledDescriptor(descriptor: Float32Array, email?: string): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(descriptor)));
+  if (email) localStorage.setItem(ENROLLED_EMAIL_KEY, email);
+}
+
+/** The account email this device's face was enrolled for, if any. */
+export function getEnrolledEmail(): string | null {
+  return localStorage.getItem(ENROLLED_EMAIL_KEY);
 }
 
 export function getEnrolledDescriptor(): Float32Array | null {
@@ -37,4 +47,5 @@ export function hasEnrollment(): boolean {
 
 export function clearEnrollment(): void {
   localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(ENROLLED_EMAIL_KEY);
 }

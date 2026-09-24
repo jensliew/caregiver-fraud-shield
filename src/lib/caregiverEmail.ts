@@ -82,10 +82,18 @@ export function buildCaregiverEmailFields(
   opts: { timestamp?: string; accountHolder?: string } = {}
 ): CaregiverEmailFields {
   const { subject, amount, decision } = transfer;
+
+  // A limit-increase notice has no payee, and its figure is the limit raised
+  // *to* — not a payment. So drop the Recipient row and relabel the amount.
+  // (Detected from the decision's category, which is the source of truth.)
+  const isLimitIncrease =
+    decision.categories.length > 0 && decision.categories.every((c) => c.id === 'limit-increase');
+
   return {
     accountHolder: opts.accountHolder || ACCOUNT_HOLDER_NAME,
-    recipient: subject || '',
+    recipient: isLimitIncrease ? '' : subject || '',
     amount: Number.isFinite(amount) ? money(amount) : '',
+    amountLabel: isLimitIncrease ? 'New transfer limit:' : 'Transaction Amount:',
     timestamp: formatTimestamp(opts.timestamp ?? new Date().toISOString()),
     flagIssue: flagIssueText(decision),
   };
@@ -101,10 +109,12 @@ export function buildCaregiverEmailBody(
   opts: { locked?: boolean; timestamp?: string } = {}
 ): string {
   const f = buildCaregiverEmailFields(transfer, { timestamp: opts.timestamp });
+  const amountLabel = (f.amountLabel ?? 'Transaction Amount:').replace(/:$/, '');
   const lines = [
     `For Account Holder: ${f.accountHolder}`,
-    `Recipient: ${f.recipient}`,
-    `Transaction Amount: ${f.amount}`,
+    // Recipient line only when there is one (a limit increase has no payee).
+    ...(f.recipient ? [`Recipient: ${f.recipient}`] : []),
+    `${amountLabel}: ${f.amount}`,
     `Timestamp: ${f.timestamp}`,
     `Flag Issue: ${f.flagIssue ? '\n  ' + f.flagIssue.split('\n').join('\n  ') : ''}`,
     '',

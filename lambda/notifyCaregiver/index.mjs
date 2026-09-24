@@ -257,9 +257,26 @@ function normalizeFields(raw) {
     accountHolder: str(f.accountHolder),
     recipient: str(f.recipient),
     amount: str(f.amount),
+    // Label for the amount row; defaults to a payment label. A limit-increase
+    // notice sends "New transfer limit:" since the figure is the limit
+    // raised to, not a payment amount.
+    amountLabel: str(f.amountLabel) || 'Transaction Amount:',
     timestamp: str(f.timestamp),
     flagIssue: str(f.flagIssue),
   };
+}
+
+// Build the standard labelled rows. The Recipient row is omitted entirely
+// when there is no recipient (e.g. a transfer-limit-increase notice, which
+// has no payee), rather than rendering a blank row.
+function standardRows(fields) {
+  return (
+    fieldRow('For Account Holder:', fields.accountHolder) +
+    (fields.recipient ? fieldRow('Recipient:', fields.recipient) : '') +
+    fieldRow(fields.amountLabel || 'Transaction Amount:', fields.amount) +
+    fieldRow('Timestamp:', fields.timestamp) +
+    fieldRow('Flag Issue:', fields.flagIssue)
+  );
 }
 
 function fieldRow(label, value) {
@@ -280,12 +297,7 @@ function buildEmailHtml(subject, fields, textFallback, links = {}) {
   const { approveUrl, rejectUrl } = links;
   const isApproval = Boolean(approveUrl && rejectUrl);
 
-  const rows =
-    fieldRow('For Account Holder:', fields.accountHolder) +
-    fieldRow('Recipient:', fields.recipient) +
-    fieldRow('Transaction Amount:', fields.amount) +
-    fieldRow('Timestamp:', fields.timestamp) +
-    fieldRow('Flag Issue:', fields.flagIssue);
+  const rows = standardRows(fields);
 
   const buttons = isApproval
     ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px 0 0;">
@@ -338,12 +350,7 @@ function buildMalwareEmailHtml(subject, fields, textFallback, opts = {}) {
   const { unblockUrl, hotline } = opts;
   const telHref = `tel:${String(hotline || '').replace(/[^+\d]/g, '')}`;
 
-  const rows =
-    fieldRow('For Account Holder:', fields.accountHolder) +
-    fieldRow('Recipient:', fields.recipient) +
-    fieldRow('Transaction Amount:', fields.amount) +
-    fieldRow('Timestamp:', fields.timestamp) +
-    fieldRow('Flag Issue:', fields.flagIssue);
+  const rows = standardRows(fields);
 
   const unblockBtn = unblockUrl
     ? `<td style="padding-right:12px;">

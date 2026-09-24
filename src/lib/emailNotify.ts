@@ -27,6 +27,12 @@ export interface CaregiverEmailFields {
   accountHolder: string;
   recipient: string;
   amount: string;
+  /**
+   * Label for the amount row. Defaults server-side to "Transaction Amount"
+   * for a payment, but a limit-increase notice sets it to "New transfer
+   * limit" since the figure is the limit raised *to*, not a payment.
+   */
+  amountLabel?: string;
   timestamp: string;
   flagIssue: string;
 }

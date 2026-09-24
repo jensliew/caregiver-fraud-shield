@@ -9,12 +9,15 @@
  * the image is missing, so the layout never breaks.
  */
 export function BrandHero({ title, subtitle }: { title: string; subtitle: string }) {
+  // Resolve the asset against Vite's BASE_URL so it works both at the site
+  // root (local dev) and under a subpath (GitHub Pages: /caregiver-fraud-shield/).
+  const heroUrl = `${import.meta.env.BASE_URL}login-hero.jpg`;
   return (
     <header className="relative overflow-hidden h-60">
       {/* Photo backdrop */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/login-hero.jpg'), linear-gradient(135deg, #f6dadd, #faf6ef)" }}
+        style={{ backgroundImage: `url('${heroUrl}'), linear-gradient(135deg, #f6dadd, #faf6ef)` }}
         aria-hidden="true"
       />
 

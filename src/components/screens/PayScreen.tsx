@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import { ScreenShell } from '../layout/ScreenShell';
 import { ScreenHeaderTint } from '../layout/ScreenHeaderTint';
 import { BackLink } from '../layout/BackLink';
@@ -232,7 +232,7 @@ function PayLockedView() {
   // lock clears), so no stray timers or state updates linger.
   useEffect(() => () => pollAbort.current?.abort(), []);
 
-  async function handleSendEmail() {
+  const handleSendEmail = useCallback(async () => {
     if (!caregiverRequest) return;
     setEmailStatus('sending');
     // Resend of the same detailed fraud report the app already auto-sends on
@@ -269,7 +269,16 @@ function PayLockedView() {
       else if (decision === 'approved') caregiverDecide(true);
       else if (decision === 'rejected') caregiverDecide(false);
     }
-  }
+  }, [caregiverRequest, currentTransfer, isMalwareLock, decisionToken, logCaregiverEmail, caregiverDecide, unblockPayTransfer]);
+
+  // Auto-send the caregiver email once the caregiver-notice step is shown —
+  // no manual button. Guarded by emailStatus so it fires exactly once even
+  // if the component re-renders while the send/poll is in flight.
+  useEffect(() => {
+    if (step === 'notified' && emailStatus === 'idle') {
+      void handleSendEmail();
+    }
+  }, [step, emailStatus, handleSendEmail]);
 
   if (step === 'verify') {
     return <IdentityCheckStep incidentId={currentTransfer?.incidentId ?? null} onContinue={() => setStep('notified')} />;
@@ -292,12 +301,27 @@ function PayLockedView() {
           </strong>
           <p>{isMalwareLock ? t('malwareCaregiverInfoBody') : t('caregiverNotifiedBody')}</p>
 
-          <Button variant="secondary" onClick={handleSendEmail} disabled={emailStatus === 'sending'}>
-            <Icon name="mail" size={20} />
-            {t('sendEmailAlertButton')}
-          </Button>
-          {emailStatus === 'sending' && <p className="text-sm text-ink-muted">{t('emailSendingStatus')}</p>}
-          {emailStatus === 'sent' && <p className="text-sm text-success font-bold">{t('emailSentStatus')}</p>}
+          {/* The alert email sends automatically when this notice appears —
+              no button to press. Status is shown live; a retry only appears
+              if the automatic send failed. */}
+          {(emailStatus === 'idle' || emailStatus === 'sending') && (
+            <p className="text-sm text-ink-muted flex items-center gap-2">
+              <Icon name="mail" size={18} />
+              {t('emailSendingStatus')}
+            </p>
+          )}
+          {emailStatus === 'sent' && (
+            <p className="text-sm text-success font-bold flex items-center gap-2">
+              <Icon name="mail" size={18} />
+              {t('emailSentStatus')}
+            </p>
+          )}
+          {emailStatus === 'error' && (
+            <Button variant="secondary" onClick={handleSendEmail}>
+              <Icon name="mail" size={20} />
+              {t('sendEmailAlertButton')}
+            </Button>
+          )}
           {emailStatus === 'error' && <p className="text-sm text-accent font-bold">{t('emailFailedStatus')}</p>}
           {awaitingDecision && <p className="text-sm text-ink-muted">{t('awaitingCaregiverDecision')}</p>}
         </div>

@@ -5,10 +5,8 @@ import { BrandHero } from '../layout/BrandHero';
 import { FaceScanCapture } from '../FaceScanCapture';
 import { useAppState } from '../../state/AppStateContext';
 import { useT } from '../../i18n/useT';
-import { getEnrolledDescriptor, hasEnrollment, getEnrolledEmail } from '../../lib/faceEnrollment';
-import { getSessionEmail, clearSession } from '../../lib/session';
-import { loginWithPin, fetchAccount } from '../../lib/authApi';
-import type { VerifyResult } from '../../hooks/useFaceDetection';
+import { getSessionEmail } from '../../lib/session';
+import { loginWithPin, identifyByFace } from '../../lib/authApi';
 
 type View = 'face' | 'pin';
 
@@ -17,20 +15,16 @@ type View = 'face' | 'pin';
  * language: a warm hero image with the signature red curve, then a clean
  * white action card with a deep-slate primary button.
  *
- * Biometric face scan is ALWAYS the default view. If this device has a
- * remembered, enrolled account the scan logs straight in; otherwise the
- * card guides the user to register or use email + PIN.
+ * Biometric face scan is ALWAYS the default view and is identity-first:
+ * you scan your face, the server matches it against every enrolled account
+ * (1-to-many) and signs you into whichever one it belongs to — no email or
+ * on-device enrollment needed, just like a phone's Face ID.
  */
 export function LoginScreen() {
   const { signIn, setScreen } = useAppState();
   const t = useT();
 
   const sessionEmail = getSessionEmail();
-  const enrolledDescriptor = hasEnrollment() ? getEnrolledDescriptor() : null;
-  // The account for face login: the current session if present, else the
-  // account this device's face was enrolled for (survives sign-out).
-  const faceLoginEmail = sessionEmail ?? getEnrolledEmail();
-  const canFaceLogin = Boolean(faceLoginEmail && enrolledDescriptor);
 
   const [view, setView] = useState<View>('face'); // biometric is the default
   const [email, setEmail] = useState(sessionEmail ?? '');
@@ -38,41 +32,25 @@ export function LoginScreen() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
-  async function handleFaceResult(result: VerifyResult) {
-    // FaceScanCapture (verify mode) is the single, authoritative biometric
-    // check: it runs liveness (blink) + a fresh descriptor matched against
-    // the enrolled one, live on this device. result.success is that outcome.
-    //
-    // We deliberately do NOT re-run a server-side face comparison here. Doing
-    // so compared the enrolled descriptor against the copy stored on the
-    // account, which can differ (e.g. enrolled on another device, or after a
-    // DB reset) and produced a contradictory "Face verified" + "Face didn't
-    // match" at once. Once the live match passes, we just fetch the account.
-    if (!result.success) {
-      setError(t('loginFaceFailed'));
-      return;
-    }
-    // Face is verified. We now need the account to sign in. Without a
-    // remembered email (neither an active session nor the enrolled account)
-    // we can't fetch it, so guide the user to PIN rather than silently doing
-    // nothing (the "verified but nothing happens" bug).
-    if (!faceLoginEmail) {
-      setError('Face verified, but we could not find your account on this device. Please log in with your email and PIN.');
-      setView('pin');
-      return;
-    }
+  // Identity-first: the liveness-checked live descriptor is sent to the
+  // server, which finds which account this face belongs to and returns it.
+  async function handleIdentify(descriptor: Float32Array) {
     setBusy(true);
     setError('');
-    const res = await fetchAccount(faceLoginEmail);
+    const res = await identifyByFace(Array.from(descriptor));
     setBusy(false);
     if (res.ok && res.account) {
       signIn(res.account);
     } else {
-      // Verified locally but the account fetch failed (network, or the
-      // account no longer exists in the DB, e.g. after a reset). Surface it
-      // clearly and offer PIN instead of a dead end.
-      setError(res.error || 'Face verified, but we could not load your account. Please try again or use your PIN.');
+      setError(res.error || 'No matching account for this face. Try again or use your PIN.');
     }
+  }
+
+  function handleLivenessFail(reason: 'no-face' | 'no-blink' | 'error') {
+    // FaceScanCapture already shows a specific status; keep the card's own
+    // error area clear so we don't double up messages.
+    if (reason === 'error') setError(t('loginFaceFailed'));
+    else setError('');
   }
 
   async function handlePinSubmit(e: React.FormEvent) {
@@ -90,13 +68,6 @@ export function LoginScreen() {
     }
   }
 
-  function useDifferentAccount() {
-    clearSession();
-    setEmail('');
-    setView('pin');
-    setError('');
-  }
-
   return (
     <section className="relative flex-1 flex flex-col">
       <BrandHero title={t('loginHeroTitle')} subtitle={t('loginTagline')} />
@@ -106,25 +77,17 @@ export function LoginScreen() {
           {view === 'face' ? (
             <>
               <div className="flex flex-col items-center gap-4">
-                {enrolledDescriptor ? (
-                  // A face is enrolled on this device → run the real scan.
-                  // If the account can't be resolved afterwards (no remembered
-                  // email, or account not in the DB), handleFaceResult shows a
-                  // clear message and switches to PIN — it never dead-ends.
-                  <FaceScanCapture
-                    mode="verify"
-                    scanLabel={t('loginBiometricButton')}
-                    scanIcon="faceScan"
-                    enrolledDescriptor={enrolledDescriptor}
-                    onResult={handleFaceResult}
-                    onScanStart={() => setError('')}
-                  />
-                ) : (
-                  // No enrolled face on this device — face login isn't
-                  // possible here, so guide the user to register or use PIN
-                  // rather than showing a dead camera button.
-                  <FaceIntro onRegister={() => setScreen('register')} label={t('loginBiometricButton')} />
-                )}
+                {/* Identity-first: always available. Scan → server identifies
+                    the account by face → sign in. No on-device enrollment or
+                    remembered email needed. */}
+                <FaceScanCapture
+                  mode="identify"
+                  scanLabel={t('loginBiometricButton')}
+                  scanIcon="faceScan"
+                  onIdentify={handleIdentify}
+                  onLivenessFail={handleLivenessFail}
+                  onScanStart={() => setError('')}
+                />
               </div>
 
               {error && <p className="text-sm text-accent text-center font-bold">{error}</p>}
@@ -139,18 +102,12 @@ export function LoginScreen() {
                   <Icon name="keypad" size={18} />
                   {t('loginPinToggle')}
                 </button>
-                {canFaceLogin ? (
-                  <button type="button" onClick={useDifferentAccount} className="text-xs text-ink-muted min-h-tap">
-                    {t('loginUseDifferentAccount')}
+                <div className="flex items-center justify-center gap-1">
+                  <span className="text-sm text-ink-muted">{t('loginNoAccount')}</span>
+                  <button type="button" onClick={() => setScreen('register')} className="text-accent font-bold text-sm min-h-tap px-1">
+                    {t('loginRegisterLink')}
                   </button>
-                ) : (
-                  <div className="flex items-center justify-center gap-1">
-                    <span className="text-sm text-ink-muted">{t('loginNoAccount')}</span>
-                    <button type="button" onClick={() => setScreen('register')} className="text-accent font-bold text-sm min-h-tap px-1">
-                      {t('loginRegisterLink')}
-                    </button>
-                  </div>
-                )}
+                </div>
               </div>
             </>
           ) : (
@@ -210,22 +167,3 @@ export function LoginScreen() {
 
 const inputClass =
   'font-sans text-base font-normal px-4 py-3 rounded-2xl border border-border bg-bg min-h-tap focus:border-accent focus:bg-surface focus:outline-none transition-colors';
-
-/** Idle biometric intro for a device with no enrolled account yet. */
-function FaceIntro({ onRegister, label }: { onRegister: () => void; label: string }) {
-  return (
-    <div className="flex flex-col items-center gap-4 w-full">
-      <div className="relative flex items-center justify-center" style={{ width: 168, height: 168 }}>
-        <div className="absolute inset-0 rounded-full bg-accent-soft opacity-60 blur-xl" aria-hidden="true" />
-        <div className="absolute inset-0 rounded-full border-[5px] border-border" aria-hidden="true" />
-        <div className="absolute rounded-full bg-bg flex items-center justify-center ring-1 ring-border text-accent" style={{ inset: 10 }}>
-          <Icon name="faceScan" size={64} />
-        </div>
-      </div>
-      <Button variant="slate" block onClick={onRegister}>
-        <Icon name="faceScan" size={22} />
-        {label}
-      </Button>
-    </div>
-  );
-}

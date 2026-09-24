@@ -30,6 +30,17 @@ type FaceScanProps =
       onResult: (result: VerifyResult) => void;
       /** Called when a fresh scan starts, so the parent can clear stale errors. */
       onScanStart?: () => void;
+    }
+  | {
+      // Identity-first: run liveness, capture a live descriptor, and hand it
+      // back for the server to identify (1-to-many). No enrolled descriptor
+      // to compare against locally — the face selects the account server-side.
+      mode: 'identify';
+      scanLabel: string;
+      scanIcon?: IconName;
+      onIdentify: (descriptor: Float32Array) => void;
+      onLivenessFail: (reason: 'no-face' | 'no-blink' | 'error') => void;
+      onScanStart?: () => void;
     };
 
 const ENROLL_SAMPLE_COUNT = 5;
@@ -51,7 +62,7 @@ export function FaceScanCapture(props: FaceScanProps) {
   const { mode, scanLabel, scanIcon } = props;
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { loadModels, startWebcam, stopWebcam, captureAveragedDescriptor, verifyIdentity } = useFaceDetection();
+  const { loadModels, startWebcam, stopWebcam, captureAveragedDescriptor, verifyIdentity, runLivenessCheck } = useFaceDetection();
   const [status, setStatus] = useState('');
   const [progress, setProgress] = useState(0);
   const [scanning, setScanning] = useState(false);
@@ -111,7 +122,7 @@ export function FaceScanCapture(props: FaceScanProps) {
     // Let the parent clear any stale error from a previous attempt so we
     // never show a contradictory mix (e.g. an old "didn't match" alongside
     // this run's "Face verified").
-    if (mode === 'verify') props.onScanStart?.();
+    if (mode === 'verify' || mode === 'identify') props.onScanStart?.();
     setScanning(true);
     setProgress(0);
     setStatus('Loading face detection…');
@@ -121,6 +132,7 @@ export function FaceScanCapture(props: FaceScanProps) {
       setScanning(false);
       setStatus('Could not load the face detection model. Check your internet connection and try again.');
       if (mode === 'verify') props.onResult({ success: false, reason: 'error' });
+      if (mode === 'identify') props.onLivenessFail('error');
       return;
     }
 
@@ -139,6 +151,40 @@ export function FaceScanCapture(props: FaceScanProps) {
           props.onEnrolled(descriptor);
         } else {
           setStatus('No face detected. Try again with better lighting.');
+        }
+        return;
+      }
+
+      if (mode === 'identify') {
+        // Liveness first (fail closed on a photo / no face), then capture a
+        // live descriptor and hand it back — the server decides whose it is.
+        setStatus('Look at the camera and blink naturally…');
+        const liveness = await runLivenessCheck(video, setProgress, drawFrame);
+        if (!liveness.success) {
+          stopWebcam();
+          setScanning(false);
+          if (liveness.reason === 'no-face') {
+            setStatus('No face detected. Try again with better lighting, closer to the camera.');
+            props.onLivenessFail('no-face');
+          } else if (liveness.reason === 'no-blink') {
+            setStatus("Didn't detect a blink. Look straight at the camera and try again.");
+            props.onLivenessFail('no-blink');
+          } else {
+            setStatus('Verification failed. Try again.');
+            props.onLivenessFail('error');
+          }
+          return;
+        }
+        const descriptor = await captureAveragedDescriptor(video, 6, 120);
+        setProgress(1);
+        stopWebcam();
+        setScanning(false);
+        if (descriptor) {
+          setStatus('Face captured. Signing you in…');
+          props.onIdentify(descriptor);
+        } else {
+          setStatus('No face detected. Try again with better lighting.');
+          props.onLivenessFail('no-face');
         }
         return;
       }
@@ -165,6 +211,7 @@ export function FaceScanCapture(props: FaceScanProps) {
       setScanning(false);
       setStatus('Camera unavailable.');
       if (mode === 'verify') props.onResult({ success: false, reason: 'error' });
+      if (mode === 'identify') props.onLivenessFail('error');
     }
   }
 

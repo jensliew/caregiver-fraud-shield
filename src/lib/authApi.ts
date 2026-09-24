@@ -77,6 +77,17 @@ export function loginWithFace(email: string, faceDescriptor: number[]): Promise<
   return post('faceLogin', { email, faceDescriptor });
 }
 
+/**
+ * Identity-first face login (1-to-many): send only a live face descriptor,
+ * the server finds which account it belongs to and returns it. No email
+ * needed — the face selects the account. This is what "Log in with Face ID"
+ * uses. Offline fallback matches against the localStorage account store.
+ */
+export function identifyByFace(faceDescriptor: number[]): Promise<AuthResult> {
+  if (!ENDPOINT) return localIdentifyByFace(faceDescriptor);
+  return post('faceIdentify', { faceDescriptor });
+}
+
 export async function fetchAccount(email: string): Promise<AuthResult> {
   if (!ENDPOINT) return localFetchAccount(email);
   try {
@@ -235,4 +246,24 @@ async function localFetchAccount(emailRaw: string): Promise<AuthResult> {
   const item = readStore()[email];
   if (!item) return { ok: false, error: 'Account not found.' };
   return { ok: true, account: publicAccount(item) };
+}
+
+async function localIdentifyByFace(faceDescriptor: number[]): Promise<AuthResult> {
+  const descriptor = sanitizeDescriptor(faceDescriptor);
+  if (!descriptor) return { ok: false, error: 'A face descriptor is required.' };
+  const store = readStore();
+  let best: StoredAccount | null = null;
+  let bestDistance = Infinity;
+  for (const item of Object.values(store)) {
+    if (!item.faceDescriptor || !item.faceDescriptor.length) continue;
+    const distance = euclidean(descriptor, item.faceDescriptor);
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      best = item;
+    }
+  }
+  if (!best || !(bestDistance < FACE_MATCH_THRESHOLD)) {
+    return { ok: false, error: 'No matching account for this face.', distance: bestDistance };
+  }
+  return { ok: true, account: publicAccount(best), distance: bestDistance };
 }

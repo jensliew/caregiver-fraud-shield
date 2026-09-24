@@ -1,5 +1,5 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { scryptSync, randomBytes, timingSafeEqual } from 'node:crypto';
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -90,6 +90,7 @@ export const handler = async (event) => {
     if (action === 'register') return await handleRegister(payload);
     if (action === 'login') return await handleLogin(payload);
     if (action === 'faceLogin') return await handleFaceLogin(payload);
+    if (action === 'faceIdentify') return await handleFaceIdentify(payload);
     return json(400, { ok: false, error: 'Unknown action.' });
   } catch (err) {
     console.error('auth error', err);
@@ -172,6 +173,45 @@ async function handleFaceLogin(p) {
   const match = Number.isFinite(distance) && distance < 0.6;
   if (!match) return json(401, { ok: false, error: 'Face does not match.', distance });
   return json(200, { ok: true, account: publicAccount(item), distance });
+}
+
+// 1-to-many face identification: given a live descriptor, scan every account
+// with an enrolled face and return the closest match under the threshold.
+// This is what powers "log in with Face ID" without typing an email — the
+// face itself selects the account. Scanning the whole table is fine at demo
+// scale; a production system would use a purpose-built vector index instead.
+const FACE_MATCH_THRESHOLD = 0.6;
+async function handleFaceIdentify(p) {
+  const descriptor = sanitizeDescriptor(p.faceDescriptor);
+  if (!descriptor) return json(400, { ok: false, error: 'A face descriptor is required.' });
+
+  let best = null;
+  let bestDistance = Infinity;
+  let ExclusiveStartKey;
+  do {
+    const res = await ddb.send(
+      new ScanCommand({
+        TableName: USERS_TABLE,
+        ProjectionExpression: 'email, #n, caregiverEmail, balance, transferLimit, faceDescriptor, createdAt',
+        ExpressionAttributeNames: { '#n': 'name' },
+        ExclusiveStartKey,
+      })
+    );
+    for (const item of res.Items || []) {
+      if (!item.faceDescriptor || !item.faceDescriptor.length) continue;
+      const distance = euclidean(descriptor, item.faceDescriptor);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        best = item;
+      }
+    }
+    ExclusiveStartKey = res.LastEvaluatedKey;
+  } while (ExclusiveStartKey);
+
+  if (!best || !(bestDistance < FACE_MATCH_THRESHOLD)) {
+    return json(401, { ok: false, error: 'No matching account for this face.', distance: bestDistance });
+  }
+  return json(200, { ok: true, account: publicAccount(best), distance: bestDistance });
 }
 
 async function handleGetAccount(emailRaw) {

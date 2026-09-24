@@ -28,6 +28,8 @@ type FaceScanProps =
       scanIcon?: IconName;
       enrolledDescriptor: Float32Array;
       onResult: (result: VerifyResult) => void;
+      /** Called when a fresh scan starts, so the parent can clear stale errors. */
+      onScanStart?: () => void;
     };
 
 const ENROLL_SAMPLE_COUNT = 5;
@@ -106,6 +108,10 @@ export function FaceScanCapture(props: FaceScanProps) {
   async function handleScan() {
     const video = videoRef.current;
     if (!video) return;
+    // Let the parent clear any stale error from a previous attempt so we
+    // never show a contradictory mix (e.g. an old "didn't match" alongside
+    // this run's "Face verified").
+    if (mode === 'verify') props.onScanStart?.();
     setScanning(true);
     setProgress(0);
     setStatus('Loading face detection…');
@@ -149,8 +155,7 @@ export function FaceScanCapture(props: FaceScanProps) {
       } else if (result.reason === 'no-blink') {
         setStatus("Didn't detect a blink. Look straight at the camera and try again.");
       } else if (result.reason === 'no-match') {
-        const d = typeof result.distance === 'number' ? ` (distance ${result.distance.toFixed(3)})` : '';
-        setStatus(`That doesn't match the enrolled face${d}.`);
+        setStatus("That doesn't match the enrolled face. Try again or use your PIN.");
       } else {
         setStatus('Verification failed. Try again.');
       }

@@ -7,7 +7,7 @@ import { useAppState } from '../../state/AppStateContext';
 import { useT } from '../../i18n/useT';
 import { getEnrolledDescriptor, hasEnrollment } from '../../lib/faceEnrollment';
 import { getSessionEmail, clearSession } from '../../lib/session';
-import { loginWithPin, loginWithFace, fetchAccount } from '../../lib/authApi';
+import { loginWithPin, fetchAccount } from '../../lib/authApi';
 import type { VerifyResult } from '../../hooks/useFaceDetection';
 
 type View = 'face' | 'pin';
@@ -36,21 +36,22 @@ export function LoginScreen() {
   const [busy, setBusy] = useState(false);
 
   async function handleFaceResult(result: VerifyResult) {
-    // FaceScanCapture (verify mode) has already run the authoritative,
-    // real check here: liveness (blink) + a fresh descriptor matched
-    // against the enrolled one. result.success is that outcome, so we only
-    // proceed on a genuine match and fail closed otherwise.
-    if (!result.success || !sessionEmail || !enrolledDescriptor) {
+    // FaceScanCapture (verify mode) is the single, authoritative biometric
+    // check: it runs liveness (blink) + a fresh descriptor matched against
+    // the enrolled one, live on this device. result.success is that outcome.
+    //
+    // We deliberately do NOT re-run a server-side face comparison here. Doing
+    // so compared the enrolled descriptor against the copy stored on the
+    // account, which can differ (e.g. enrolled on another device, or after a
+    // DB reset) and produced a contradictory "Face verified" + "Face didn't
+    // match" at once. Once the live match passes, we just fetch the account.
+    if (!result.success || !sessionEmail) {
       if (!result.success) setError(t('loginFaceFailed'));
       return;
     }
     setBusy(true);
     setError('');
-    // With a real backend, faceLogin re-verifies server-side and returns the
-    // account; if that path errors (or in offline mode) fall back to simply
-    // fetching the account we've already biometrically verified above.
-    let res = await loginWithFace(sessionEmail, Array.from(enrolledDescriptor));
-    if (!res.ok) res = await fetchAccount(sessionEmail);
+    const res = await fetchAccount(sessionEmail);
     setBusy(false);
     if (res.ok && res.account) signIn(res.account);
     else setError(res.error || t('loginFaceFailed'));
@@ -94,6 +95,7 @@ export function LoginScreen() {
                     scanIcon="faceScan"
                     enrolledDescriptor={enrolledDescriptor}
                     onResult={handleFaceResult}
+                    onScanStart={() => setError('')}
                   />
                 ) : (
                   // No enrolled account on this device — show the scan glyph
